@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:padding="10sp"
+        app:cardCornerRadius="2sp"
+        >
+
+        <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/moveImg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/cardTitle"
+
+                >
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/move_cart_gray"
+                    android:layout_marginTop="2sp"
+                    />
+        </FrameLayout>
+        <TextView
+                android:id="@+id/cardTitle"
+                android:layout_width="0sp"
+                app:layout_constraintHorizontal_bias="1"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textSize="20sp"
+                android:text="@string/noteTitleDemo"
+                app:layout_constraintStart_toEndOf="@id/moveImg"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/colorPrimary"
+
+                />
+        <TextView
+                android:id="@+id/cardNote"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                android:text="@string/noteDemo"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/moveImg"
+                app:layout_constraintTop_toBottomOf="@id/cardTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                />
+        <TextView
+                android:id="@+id/cardTime"
+                android:layout_width="0sp"
+                app:layout_constraintHorizontal_bias="1"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@string/noteTimeDemo"
+                app:layout_constraintStart_toEndOf="@id/moveImg"
+                app:layout_constraintTop_toBottomOf="@id/cardNote"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

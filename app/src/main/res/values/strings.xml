@@ -15,4 +15,8 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="lognote">LOGNOTE</string>
+    <string name="noteDemo">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less</string>
+    <string name="noteTitleDemo">What is Lorem Ipsum?</string>
+    <string name="noteTimeDemo">03.00 pm</string>
+    <string name="save">save</string>
 </resources>
