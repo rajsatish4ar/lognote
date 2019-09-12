@@ -1,6 +1,7 @@
 package com.lognote.db;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -8,18 +9,21 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.lognote.modal.Note;
+import com.lognote.modal.Category;
+import com.lognote.modal.LogNote;
 import com.lognote.utils.NoteAsyncTask;
 
-import static com.lognote.utils.Constants.ADD_TEMP_NOTES;
+import static com.lognote.utils.Constants.ADD_TEMP;
 
-@Database(entities = {Note.class}, version = 1)
-public abstract class NoteDatabase extends RoomDatabase {
-    private static NoteDatabase instance;
-    public  abstract NotesDAO notesDAO();
-    public static synchronized NoteDatabase getInstance(Context context){
+@Database(entities = {LogNote.class, Category.class}, version = 1)
+public abstract class LogsDatabase extends RoomDatabase {
+    private static LogsDatabase instance;
+    abstract LogDao logDao();
+    abstract CategoryDAO catDao();
+
+    public static synchronized LogsDatabase getInstance(Context context){
         if(instance==null){
-            instance = Room.databaseBuilder(context.getApplicationContext(),NoteDatabase.class,"note_database")
+            instance = Room.databaseBuilder(context.getApplicationContext(),LogsDatabase.class,"note_database")
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallBack)
                     .build();
@@ -30,7 +34,7 @@ public abstract class NoteDatabase extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-            new NoteAsyncTask(instance.notesDAO(),ADD_TEMP_NOTES).execute();
+            new NoteAsyncTask(instance.logDao(),ADD_TEMP).execute();
         }
     };
 }

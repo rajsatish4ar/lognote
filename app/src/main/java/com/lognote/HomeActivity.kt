@@ -3,46 +3,60 @@ package com.lognote
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.lognote.adapter.NoteAdapter
-import com.lognote.modal.Note
-import com.lognote.viewModal.NoteViewModal
 import kotlinx.android.synthetic.main.content_home.*
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import com.google.gson.Gson
+import com.lognote.listener.LogClickListener
+import com.lognote.modal.LogNote
+import com.lognote.utils.Constants.*
+import com.lognote.viewModal.LogViewModal
+import kotlinx.android.synthetic.main.app_bar_home.*
 
+@Suppress("UNREACHABLE_CODE")
 class HomeActivity : AppCompatActivity() {
-
-     lateinit var noteViewMoodal:NoteViewModal
+      val  NEW_LOG = 1234
+     lateinit var logsViewModal: LogViewModal
     lateinit var noteAdapter: NoteAdapter
+    lateinit var  drawerLayout :DrawerLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-          val intent= Intent(this,NewNoteActivity::class.java)
-          startActivityForResult(intent,2000)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+        toolbar.setNavigationOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
         }
-//        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-//        val navView: NavigationView = findViewById(R.id.nav_view)
+       fab.setOnClickListener { view ->
+          val intent= Intent(this,NewNoteActivity::class.java)
+          startActivityForResult(intent, NEW_LOG)
+        }
+
+        drawerLayout = findViewById(R.id.drawer_layout)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+
         noteAdapter = NoteAdapter(this)
         recyclerView.layoutManager= LinearLayoutManager(this)
         recyclerView.adapter=noteAdapter
         recyclerView.setHasFixedSize(true)
-        noteViewMoodal = ViewModelProviders.of(this).get(NoteViewModal::class.java)
-        noteViewMoodal.allNotes.observe(this,object :Observer<List<Note>>{
-            override fun onChanged(t: List<Note>?) {
-                noteAdapter.setList(t)
-            }
+        logsViewModal = ViewModelProviders.of(this).get(LogViewModal::class.java)
+        logsViewModal.allLogs.observe(this,
+            Observer<List<LogNote>> { t -> noteAdapter.setList(t) })
 
-        })
+
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or  ItemTouchHelper.RIGHT ) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -53,24 +67,55 @@ class HomeActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                noteViewMoodal.deleteNote(noteAdapter.getItemAt(viewHolder.adapterPosition))
+                logsViewModal.deleteNote(noteAdapter.getItemAt(viewHolder.adapterPosition))
             }
 
 
         }).attachToRecyclerView(recyclerView)
 
+
+        noteAdapter.setLogClickListener(object :LogClickListener{
+            override fun onClick(log: LogNote) {
+                 val intent = Intent(this@HomeActivity,ViewLogActivity::class.java)
+                 val asString =Gson().toJson(log)
+                 intent.putExtra(LOG_EXTRA,asString)
+                 startActivityForResult(intent, VIEW)
+            }
+
+        })
+
+        val menu = navView.getMenu()
+
+        val subMenu = menu.addSubMenu("SubMenu Title")
+        for (i in 1..2) {
+
+            subMenu.add(123,4343,1, "SubMenu Item $i")
+            menu.findItem( 4343 ).setIcon( R.drawable.ic_label_outline )
+        }
+        val subMenu2 = menu.addSubMenu("SubMenu2 ")
+        for (i in 1..2) {
+            subMenu2.add("SubMenu2 Item $i")
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==2000 && resultCode== Activity.RESULT_OK){
-            val note = Gson().fromJson(data?.getStringExtra("NEW_NOTE"),Note::class.java)
-            noteViewMoodal.insertNote(note)
+        if(resultCode== Activity.RESULT_OK){
+//            when(requestCode){
+//                NEW_NOTE->  logsViewMoodal.insertNote(NOTE_TO_EDIT)
+//                UPDATE_NOTE ->  logsViewMoodal.insertNote(NOTE_TO_EDIT)
+//            }
+//            NOTE_TO_EDIT=null
+
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.home, menu)
-        return true
+        return false
     }
+
+
 }
+

@@ -19,4 +19,8 @@
     <string name="noteTitleDemo">What is Lorem Ipsum?</string>
     <string name="noteTimeDemo">03.00 pm</string>
     <string name="save">save</string>
+    <string name="title_activity_an">AnActivity</string>
+    <string name="note_title">Type Title Here ...</string>
+    <string name="note">Type Note Here ...</string>
+    <string name="submit">Submit</string>
 </resources>

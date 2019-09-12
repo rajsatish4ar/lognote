@@ -6,9 +6,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lognote.R;
-import com.lognote.modal.Note;
-
-import org.w3c.dom.Text;
+import com.lognote.modal.LogNote;
 
 
 public class NoteViewHolder extends RecyclerView.ViewHolder {
@@ -24,9 +22,9 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
         time = itemView.findViewById(R.id.cardTime);
     }
 
-    public void setItems(Note note) {
+    public void setItems(LogNote note) {
         title.setText(note.getTitle());
-        noteContent.setText(note.getBody());
+        noteContent.setText(note.getDescription());
 //        time.setText();
     }
 }

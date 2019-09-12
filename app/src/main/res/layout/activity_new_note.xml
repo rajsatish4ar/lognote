@@ -1,55 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".NewNoteActivity">
-        <com.google.android.material.appbar.AppBarLayout
-                android:layout_width="match_parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tool"
-                android:theme="@style/ToolbarTheme"
-                app:elevation="0sp"
-                >
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="#ffffff"
-                    app:titleTextColor="@color/colorPrimary"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-            </com.google.android.material.appbar.AppBarLayout>
-   <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Note Title"
-        android:maxLines="3"
-        android:minHeight="50sp"
-        android:padding="5sp"
-        android:id="@+id/noteTitle"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/tool"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="5sp"
-        />
+        tools:context=".NewNoteActivity"
+        >
 
-    <EditText
+    <data>
+
+        <variable
+                name="viewModal"
+                type="com.lognote.viewModal.LogViewModal" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Note ..."
-            android:layout_margin="5sp"
-            android:background="@color/white"
-            android:minHeight="50sp"
-            android:padding="5sp"
-            android:id="@+id/note"
-            app:layout_constraintTop_toBottomOf="@id/noteTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="match_parent"
+            >
+
+        <include layout="@layout/toolbar" android:id="@+id/tool"/>
+        <EditText
+                android:id="@+id/noteTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16sp"
+                android:background="@color/white"
+                android:hint="@string/note_title"
+                android:maxLines="3"
+                android:minHeight="50sp"
+                android:padding="8sp"
+                android:text="@={viewModal.title}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tool"
+
+                />
+
+        <EditText
+                android:id="@+id/note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16sp"
+                android:background="@color/white"
+                android:hint="@string/note"
+                android:text="@={viewModal.description}"
+                android:minHeight="150sp"
+                android:padding="8sp"
+                android:gravity="start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/noteTitle" />
+
+
+
+        <Button
+                android:layout_width="0sp"
+                android:layout_height="60sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/submit"
+                android:layout_margin="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/saveBtn"
+                />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
